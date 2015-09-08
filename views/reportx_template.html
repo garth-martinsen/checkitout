@@ -1,0 +1,112 @@
+<!-- File: reportx_template.html -->
+<!DOCTYPE html>
+<html>
+<head>
+ <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<style>
+div.container {
+   font: normal normal normal 11px/normal '.Arial-Regular';
+    width: 42em;
+    height: 14em;
+    padding: 5px;
+    border: .1em solid black;
+    background-color: lightgray;
+}
+td {
+ vertical-align:top;
+}
+#old-patron-box, new-patron-box {
+padding: 2px;
+}
+
+}
+#heading {
+ text-align:center;
+}
+
+#filter-label {
+  width: 14%;
+  background-color: #E7EBEC;
+}
+
+#newbook-label {
+  width: 14%;
+  background-color: #E7EBEC;
+}
+#filter-patrons {
+  width: 5%;
+}
+#patron-list {
+  width: 75%
+
+}
+
+#newpatron {
+width:80%;
+}
+
+#button-box {
+text-align:center;
+}
+ .button {
+  margin: 10px;
+    color: yellow;
+    background-color: gray;
+}
+ 
+.box {
+padding: 5px;
+}
+
+</style>
+</head>
+<form id="form1">
+<body>
+  <h2>{{name}}</h2>
+  <table id="report-box">
+    <th>Type</th><th>Result</th>
+    <tr> 
+     <td>
+         <select id="reporttype" name="reporttype">
+          <option value="none">Select report</option>
+          <option value="loans">loans</option>
+          <option value="due">due</option>
+          <option value="overdue">overdue</option>
+          <option value="lostbooks">lostbooks</option>
+          <option value="newbooks">newbooks</option>
+        </select>
+    </td> 
+    <td>
+       <textarea id="report" rows="10" cols="70" readonly style="color:gray;text-align:left" size=10 contenteditable="false">{{reportx}}</textarea>
+    </td>
+  </tr>
+  <tr>
+    <td> <input type="submit" id="srch" name="submit" formmethod="post" formenctype="application/x-www-form-urlencoded" formaction='http://localhost:8181/reportx/'   value="Search"></input><td>
+
+  </tr>
+ </table>
+</body>
+</form>
+<script>
+$(document).ready(function(){
+var reports = ['choose one', 'loans','due','overdue','missing_lost','newbooks']
+var rpt=0;
+$('#reporttype').change( function (){
+   var element = $( this );
+   rpt =  $(this).val();
+
+});
+/*--------------------------
+$('#srch').click(function(){
+   if(rpt === 0) {
+      alert('You must select a report to see.');
+   } else{
+   var url = 'http://localhost:8181/reportx/' + reports[rpt];
+   alert('URL: ' + url);
+   $.post(url);
+   }
+});
+------------------*/
+});
+</script>
+</html>
