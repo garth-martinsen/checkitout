@@ -1,0 +1,3 @@
+*.swp
+study/*
+node_modules/*
