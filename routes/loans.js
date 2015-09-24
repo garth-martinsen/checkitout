@@ -1,15 +1,10 @@
-/* --------------------
-     var books = require('books')
-     var contacts = require('contacts')
--------------------- */ 
-
 /* The LoansDAO must be constructed with a connected database object */
 function LoansDAO(db) {
     "use strict";
 
     /* If this constructor is called without the "new" operator, "this" points
-       console.log('Entered LoansDAO constructor...');
      * to the global object. Log a warning and call it correctly. */
+       console.log('Entered LoansDAO constructor...');
     if (false === (this instanceof LoansDAO)) {
         console.log('Warning: LoansDAO constructor called without "new" operator');
         return new LoansDAO(db);
@@ -97,13 +92,6 @@ return (d.getDate() + '/' + d.getMonth() + '/' + d.getFullYear());
 
 
 
-/*
-  loans.getLoans(function (err, result){
-   loans.getOverdues(function (err, result){
-   loans.getBooksDue(function (err, result){
-   loans.getMissingOrLostBooks(function (err, result){
-   loans.getNewBooks(function (err, result)
-*/
 
 /*  ----------------------------------------
     this.insertEntry = function (title, patron, callback) {
@@ -132,5 +120,6 @@ return (d.getDate() + '/' + d.getMonth() + '/' + d.getFullYear());
 
     }
  -------------------------------------- */
+console.log('Finished LoansDAO constructor.');
 }
 module.exports.LoansDAO = LoansDAO;

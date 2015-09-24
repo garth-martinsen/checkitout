@@ -6,36 +6,41 @@
 div.container {
    font: normal normal normal 11px/normal '.Arial-Regular';
     width: 42em;
-    height: 11em;
+    height: 14em;
     padding: 5px;
     border: .1em solid black;
     background-color: lightgray;
 }
 
+#book-box, newbook-box {
+padding: 2px;
 }
-.h2 {
+
+}
+#heading {
  text-align:center;
 }
 
 #filter-label {
-  width: 7%;
+  width: 14%;
   background-color: #E7EBEC;
 }
 
-#filter-people {
-  width: 5%;
+#newbook-label {
+  width: 14%;
+  background-color: #E7EBEC;
 }
-
-#person-list {
-  width: 80%;
-}
-
 #filter-books {
   width: 5%;
 }
 #book-list {
-  width: 80%;
+  width: 75%;
 }
+
+#newbook {
+width:80%;
+}
+
 #button-box {
 text-align:center;
 }
@@ -44,6 +49,10 @@ text-align:center;
     color: yellow;
     background-color: gray;
 }
+ 
+.box {
+padding: 5px;
+}
 
 </style>
 </head>
@@ -51,25 +60,22 @@ text-align:center;
 <body>
 <div class = "container">
    <div class = "box" id="header-box" >
-      <h2>{{name}}</h2>
-   </div>
-   <div class="box" id="name-box">
-    <input type="text" value="Name:" class="label" id="filter-label" disabled>
-    <input type="text" id="filter-people">
-    <select id="person-list" >
-    {{persons}}
-    </select>
+      <h2 id="heading"><%=name %></h2>
    </div>
    <div class="box" id="book-box">
-    <input type="text" value="Book:" class="label" id="filter-label" disabled>
+    <input type="text" value="Old Book:" class="label" id="filter-label" disabled>
     <input type="text" id="filter-books">
     <select id="book-list" >
      {{resources}}
     </select>
    </div>
+   <div class="box" id="newbook-box">
+    <input type="text" value="New Book:" id="filter-label" disabled>
+    <input type="text" id="newbook">
+   </div>
    <div class="box" id="button-box">
-    <input type="button" class = "button" id="checkout-button" value="CheckOut">
-    <input type="button" class = "button" id="checkin-button" value="CheckIn">
+    <input type="button" class = "button" id="save-newbook-button" value="SaveNew">
+    <input type="button" class = "button" id="remove-oldbook-button" value="RemoveOld">
    </div>
 </div>
    <script src="/js/library.js"></script>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<style>
+div.container {
+   font: normal normal normal 11px/normal '.Arial-Regular';
+    width: 42em;
+    height: 11em;
+    padding: 5px;
+    border: .1em solid black;
+    background-color: lightgray;
+}
+
+}
+.h2 {
+ text-align:center;
+}
+
+#filter-label {
+  width: 7%;
+  background-color: #E7EBEC;
+}
+
+#filter-people {
+  width: 5%;
+}
+
+#person-list {
+  width: 80%;
+}
+
+#filter-books {
+  width: 5%;
+}
+#book-list {
+  width: 80%;
+}
+#button-box {
+text-align:center;
+}
+ .button {
+  margin: 10px;
+    color: yellow;
+    background-color: gray;
+}
+
+</style>
+</head>
+
+<body>
+<div class = "container">
+   <div class = "box" id="header-box" >
+      <h2><%= name %></h2>
+   </div>
+   <div class="box" id="name-box">
+    <input type="text" value="Name:" class="label" id="filter-label" disabled>
+    <input type="text" id="filter-people">
+    <select id="person-list" >
+     <%=users%>
+    </select>
+   </div>
+   <div class="box" id="book-box">
+    <input type="text" value="Book:" class="label" id="filter-label" disabled>
+    <input type="text" id="filter-books">
+    <select id="book-list" >
+     <%=books%>
+    </select>
+   </div>
+   <div class="box" id="button-box">
+    <input type="button" class = "button" id="checkout-button" value="CheckOut">
+    <input type="button" class = "button" id="checkin-button" value="CheckIn">
+   </div>
+</div>
+  <script>
+
+ $(document).ready(function(){
+    var peopleFilter= $('#filter-people');
+    var bookFilter =$('#filter-books'); 
+    var personList=  $('#person-list');
+    var bookList =$('#book-list');
+    var server= '<%=server %>';  
+
+
+    $('#filter-people').val("");
+    $('#filter-books').val("");
+    
+    $('#filter-people').keyup(function() {
+     if(  $('#filter-people').val().length >2){
+        $('#person-list').empty();
+        getPatrons($('#person-list'));
+     }
+    });
+
+    $('#filter-books').keyup(function() {
+     if( $('#filter-books').val().length >2){
+        $('#book-list').empty();
+        getBooks(bookFilter.val(),$('#book-list'));
+       }
+        });
+
+   $('#checkout-button').click(function(){
+    var person = $('#person-list').find(':selected').text()
+    var book = $('#book-list').find(':selected').text()
+    var date =  new Date();
+    var duration = 1000*60*60*24*14; // 14 days in ms.
+    var dueDate = new Date(date.getTime() + duration);
+    alert('Clicked CheckOut for book: ' + book + ' to person: ' + person + ' on date: ' + date + ' due on: ' + dueDate )
+
+
+ $.get( server ,{ "collection" : "loans", "book" : book ,  "person" : person, "action": "checkout" }, function( data ) {
+    alert( "Data Loaded: " + data )
+})
+
+});
+
+   $('#checkin-button').click(function(){
+    var person = $('#person-list').find(':selected').text()
+    var book = $('#book-list').find(':selected').text()
+    var date =  new Date();
+    alert('Clicked Checkin for book: ' + book + ' to person: ' + person + ' on date: ' + date );
+
+ $.get(server ,{ "collection" : "loans", "book" : book ,  "person" : person, "action": "checkin" }, function( data ) {
+    alert( "Data Loaded: " + data )
+});
+
+})
+
+
+function getPatrons(selector){
+var pat;
+ for(var i=0; i<allPatrons.length;i++){
+  pat = allPatrons[i];
+ selector.append( makeOption(pat.ID, pat.lastName + ', ' + pat.firstName));
+ }
+}
+
+
+function getBooks(filter, selector){
+var bk;
+ for(var i=0; i< allBooks.length;i++){
+  bk = <%=books %>[i];
+  if(bk.Title.indexOf(filter)>-1){
+    selector.append( makeOption(bk.ID, bk.Title + ', ' + bk.Languange));
+ }}
+}
+
+function makeOption(val, display){
+  return  '<option value="'+ val '">' +display +'</option>'
+}
+
+}
+  </script>
+</body>
+</html>

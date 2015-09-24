@@ -1,25 +1,25 @@
-<!--File: main_template.html -->
+<!--File: main_template.ejs -->
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 </head>
 
-<body>
- <H3>{{name}}</H3>
+<body class="container">
+ <H3><%= name %></H3>
       <table id="actions" >
       <tr> <td>
-      <a href="/bookloan">BookLoans</a>
+      <a href="/bookloan">Book Loans</a>
       </td></tr>
       <tr> <td>
-      <a href= "/newbook">Manage Books</a>
+      <a href= "/managebooks">Manage Books</a>
       </td></tr>
       <tr> <td>
-      <a href= "/newpatron" >Manage Patrons</a>
+      <a href= "/managepatrons" >Manage Patrons</a>
       </td></tr>
       <tr> <td>
-      <a href= "/reportx" >View Report X</a>
+      <a href= "/viewreports" >View Reports</a>
       </td></tr>
       </table>
 </body>
