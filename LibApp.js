@@ -12,7 +12,6 @@ var app = require('express')()
   console.log('process.platform :' + JSON.stringify(process.platform));
   console.log('*************************************************')
   console.log()
-  var host = 'localhost';
 
   app.use(compression())               // gzip/deflate outgoing responses 
   app.use(cookieSession({  keys: ['secret1', 'secret2'] }))            // store session state in browser cookie 
@@ -38,6 +37,6 @@ var app = require('express')()
    });
 });
  var listener = app.listen(8181, function(){
-    app.url= 'http://' + host + ':' +  listener.address().port ;
+    app.url= 'http://localhost' + ':' +  listener.address().port ;
     console.log('Listening at:' + app.url);
 });
