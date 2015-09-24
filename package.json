@@ -12,5 +12,5 @@
   }, 
   "author": "Garth Martinsen",
   "license": "BSD",
-  "private": true
+  "private": false
 }
