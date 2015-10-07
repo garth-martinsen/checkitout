@@ -18,6 +18,7 @@ var app = require('express')()
   app.use(bodyParser.urlencoded({ extended: true }));    // parse urlencoded request bodies into req.body 
   app.set('view engine', 'ejs');
   app.set('js', __dirname + '/js'); 
+  app.set('views', __dirname + '/views'); 
   MongoClient.connect('mongodb://localhost:27017/AGLC', function(err, db) {
     "use strict";
   if(err) throw err;
@@ -29,7 +30,7 @@ var app = require('express')()
 
 
    // Define Application routes ---------------------
-   routes(app, db);
+   routes(app, db)
 
    //Error when page not found
    app.use(function onerror( err, req, res, next) {

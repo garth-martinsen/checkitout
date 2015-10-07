@@ -12,7 +12,6 @@ div.container {
     background-color: lightgray;
 }
 
-}
 .h2 {
  text-align:center;
 }
@@ -22,12 +21,8 @@ div.container {
   background-color: #E7EBEC;
 }
 
-#filter-people {
-  width: 5%;
-}
-
 #person-list {
-  width: 80%;
+  width: 87%;
 }
 
 #filter-books {
@@ -49,107 +44,31 @@ text-align:center;
 </head>
 
 <body>
+<form id="bookloans">
 <div class = "container">
    <div class = "box" id="header-box" >
       <h2><%= name %></h2>
    </div>
+     <div class="box" id="book-box">
+    <input type="text" value="Book:" class="label" id="filter-label" disabled>
+    <input type="text" id="filter-books" name="filter_books" value="<%=bf %>" > 
+    <select id="book-list"  name="book">
+     <%- books%>
+    </select>
+   </div>
    <div class="box" id="name-box">
     <input type="text" value="Name:" class="label" id="filter-label" disabled>
-    <input type="text" id="filter-people">
-    <select id="person-list" >
-     <%=users%>
+    <select id="person-list" name= 'patron' >
+     <%- users%>
     </select>
    </div>
-   <div class="box" id="book-box">
-    <input type="text" value="Book:" class="label" id="filter-label" disabled>
-    <input type="text" id="filter-books">
-    <select id="book-list" >
-     <%=books%>
-    </select>
+    <div class="box" id="button-box">
+    <h5 style='float:left; margin-left:6em' ><%=cnt %></h5>
+    <input type="submit" value="FilterLists" formaction='http://localhost:8181/bookloanf' formmethod="post" formenctype="application/x-www-form-urlencoded" class="button"></input>
+    <input type="submit" class = "button" id="checkout_button" value="CheckOut" formaction='http://localhost:8181/bookloanco' formmethod="post" formenctype="application/x-www-form-urlencoded" > 
+    <input type="submit" class = "button" id="checkin_button" value="CheckIn" formaction='http://localhost:8181/bookloanci' formmethod="post" formenctype="application/x-www-form-urlencoded"   >
    </div>
-   <div class="box" id="button-box">
-    <input type="button" class = "button" id="checkout-button" value="CheckOut">
-    <input type="button" class = "button" id="checkin-button" value="CheckIn">
-   </div>
-</div>
-  <script>
-
- $(document).ready(function(){
-    var peopleFilter= $('#filter-people');
-    var bookFilter =$('#filter-books'); 
-    var personList=  $('#person-list');
-    var bookList =$('#book-list');
-    var server= '<%=server %>';  
-
-
-    $('#filter-people').val("");
-    $('#filter-books').val("");
-    
-    $('#filter-people').keyup(function() {
-     if(  $('#filter-people').val().length >2){
-        $('#person-list').empty();
-        getPatrons($('#person-list'));
-     }
-    });
-
-    $('#filter-books').keyup(function() {
-     if( $('#filter-books').val().length >2){
-        $('#book-list').empty();
-        getBooks(bookFilter.val(),$('#book-list'));
-       }
-        });
-
-   $('#checkout-button').click(function(){
-    var person = $('#person-list').find(':selected').text()
-    var book = $('#book-list').find(':selected').text()
-    var date =  new Date();
-    var duration = 1000*60*60*24*14; // 14 days in ms.
-    var dueDate = new Date(date.getTime() + duration);
-    alert('Clicked CheckOut for book: ' + book + ' to person: ' + person + ' on date: ' + date + ' due on: ' + dueDate )
-
-
- $.get( server ,{ "collection" : "loans", "book" : book ,  "person" : person, "action": "checkout" }, function( data ) {
-    alert( "Data Loaded: " + data )
-})
-
-});
-
-   $('#checkin-button').click(function(){
-    var person = $('#person-list').find(':selected').text()
-    var book = $('#book-list').find(':selected').text()
-    var date =  new Date();
-    alert('Clicked Checkin for book: ' + book + ' to person: ' + person + ' on date: ' + date );
-
- $.get(server ,{ "collection" : "loans", "book" : book ,  "person" : person, "action": "checkin" }, function( data ) {
-    alert( "Data Loaded: " + data )
-});
-
-})
-
-
-function getPatrons(selector){
-var pat;
- for(var i=0; i<allPatrons.length;i++){
-  pat = allPatrons[i];
- selector.append( makeOption(pat.ID, pat.lastName + ', ' + pat.firstName));
- }
-}
-
-
-function getBooks(filter, selector){
-var bk;
- for(var i=0; i< allBooks.length;i++){
-  bk = <%=books %>[i];
-  if(bk.Title.indexOf(filter)>-1){
-    selector.append( makeOption(bk.ID, bk.Title + ', ' + bk.Languange));
- }}
-}
-
-function makeOption(val, display){
-  return  '<option value="'+ val '">' +display +'</option>'
-}
-
-}
-  </script>
+  </div>
+</form>
 </body>
 </html>

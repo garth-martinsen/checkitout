@@ -93,24 +93,23 @@ return (d.getDate() + '/' + d.getMonth() + '/' + d.getFullYear());
 
 
 
-/*  ----------------------------------------
-    this.insertEntry = function (title, patron, callback) {
+    this.insertEntry = function (type, loan, callback) {
         "use strict";
-        console.log("inserting loan entry" + title + patron);
-       
+        console.log("inserting loan entry for: " + type );
         var dt = new Date();
-        // Build a new loan
-        var loan = {"title": title,
-                "contact": patron,
-                "CoDate": dt,
-                "DueDate" : getDueDate(dt)),
-                 "CiDate" :    }
-
-        // now insert the loan
+        if(type === 'checkout'){
+          loan.CoDate = dt;
+          loan.DueDate = getDueDate(dt);
+          loan.CiDate = null;
+        } else if (type === 'checkin'){
+          loan.CiDate=dt;
+        }
+ 
+        // now insert/update the loan
           loans.insert(loan, function(err, wr){
             if(err) throw err;
-            callback(err, permalink);
             console.log('WriteConcern: ' + JSON.stringify(wr));
+            callback(err,loan );
           });
     }
    
@@ -119,7 +118,7 @@ return (d.getDate() + '/' + d.getMonth() + '/' + d.getFullYear());
     return new Date(d.getTime()+twoWeeksMs); 
 
     }
- -------------------------------------- */
+    
 console.log('Finished LoansDAO constructor.');
 }
 module.exports.LoansDAO = LoansDAO;
