@@ -17,8 +17,9 @@ function LoansDAO(db) {
     console.log('Count: ' + num );
     callback(null, num) ;
 }
-
-
+  function shortDate(d){
+   return (d.getDate() + '/' + d.getMonth() + '/' + d.getFullYear());
+  }   
     this.getLoans = function( callback) {
         "use strict";
            console.log('entered loans.getLoans');
@@ -30,10 +31,8 @@ function LoansDAO(db) {
             text += 'CO: ' + shortDate(items[i].CoDate) + ' Due: ' + shortDate(items[i].DueDate) + ' By: ' + items[i].Contact + ' Book: ' + items[i].Title ; 
             }
            callback(null, text );
-
 });
 }
- 
     this.getBooksDue = function( callback) {
         "use strict";
            console.log('entered loans.getBooksDue');
@@ -50,8 +49,6 @@ function LoansDAO(db) {
 
 });
 }
-
-
     this.getOverdues = function( callback) {
         "use strict";
            console.log('entered loans.getOverdues');
@@ -67,32 +64,18 @@ function LoansDAO(db) {
            callback(null, text );
 });
 }
-
     this.getMissingBooks = function( callback) {
         "use strict";
            console.log('entered loans.getMissingBooks'); 
          var today = new Date();
-    
            callback(null, 'Query not Yet Implemented for getMissingOrLostBooks.' );
 }
-
     this.getNewBooks = function( callback) {
         "use strict";
            console.log('entered loans.getNewBooks'); 
-         var today = new Date();
-   
+         var today = new Date(); 
            callback(null, 'Query Not Yet Implemented for getNewBooks.' );
 }
-
-
-
-function shortDate(d){
-return (d.getDate() + '/' + d.getMonth() + '/' + d.getFullYear());
-}   
-
-
-
-
     this.insertEntry = function (type, loan, callback) {
         "use strict";
         console.log("inserting loan entry for: " + type );
@@ -112,11 +95,15 @@ return (d.getDate() + '/' + d.getMonth() + '/' + d.getFullYear());
             callback(err,loan );
           });
     }
-   
+ this.updateEntry= function(type, q, callback){
+    console.log('Entered loans.updateEntry with query: ' + JSON.stringify(q) + ' for type: ' + JSON.stringify(type));
+    loans.update(q, {$currentDate: {CiDate: true }}, function(err, updated){
+    callback(err, updated);
+    });
+ }   
     function getDueDate(d){
     var twoWeeksMs = 2*7*24*60*60*1000;
     return new Date(d.getTime()+twoWeeksMs); 
-
     }
     
 console.log('Finished LoansDAO constructor.');

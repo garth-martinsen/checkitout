@@ -1,6 +1,5 @@
 /*----------- File: routes/content.js---------------*/
- var ObjectID = require('mongodb').ObjectID,
-     Binary = require('mongodb').Binary
+ var ObjectId = require('mongodb').ObjectID;
 
  var LoansDAO =   require('./loans').LoansDAO
  ,   PatronsDAO = require('./patrons').PatronsDAO
@@ -15,7 +14,6 @@
 function ContentHandler (db, url) {
     "use strict";
      console.log('Entered contentHandler with db and url: ' + url +'.')
-      // instantiate the DAOs
      loans = new LoansDAO(db);
      patrons = new PatronsDAO(db);
      books = new BooksDAO(db);
@@ -40,7 +38,7 @@ function ContentHandler (db, url) {
             users: allPatrons,
             books: booklist,
             server: '' + url,
-            cnt: 0
+            cnt:0
            })
  }
  this.displayNewBook = function(req, res, next) {
@@ -97,10 +95,32 @@ function ContentHandler (db, url) {
 
   this.handleBookCheckout = function(req, res, next) {
         "use strict";
-            var poid = ObjectID.createFromHexString(req.body.patron.toString());
-            var boid = ObjectID.createFromHexString(req.body.book.toString());
-            console.log('Entered content.handleBookCheckout for patronId: ' + poid + ' bookid: ' + boid);
+             var poid = ObjectId(req.body.patron.toString());
+            var boid = ObjectId(req.body.book.toString());
+           console.log('Entered content.handleBookCheckout for patronId: ' + poid + ' bookid: ' + boid);
             createLoan(res, poid, boid );
+  } //function
+  this.handleBookCheckin = function(req, res, next) {
+        "use strict";
+            var poid = ObjectId(req.body.patron);
+            var boid = ObjectId(req.body.book);
+            var lq=  { "bookId" : boid, "patronId" : poid, CiDate: {$eq: null} };
+            console.log('Entered content.handleBookCheckin for patronId: ' + poid + ' bookid: ' + boid);
+            loans.updateEntry('checkin', lq, function(err, updated){
+             console.log('Updated book loans: ' + updated);
+             books.updateStatus({ "_id" : boid },function(err, updated){
+              console.log('Book marked Available: ' + updated);
+              res.render('loans_template', 
+              { 
+               name: 'Checkin complete.',
+               bf:'',
+               users: allPatrons,
+               books: booklist,
+               server:'' + url,
+               cnt:0
+              });
+             });
+           });
   } //function
 
   function createLoan(res, patronid, bookid){
