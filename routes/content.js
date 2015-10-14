@@ -20,15 +20,15 @@ function ContentHandler (db, url) {
 
       books.getBooks(function(err, libros){ allBooks = libros });
       patrons.getPatrons(function(err, users){ allPatrons = users} );
-      loans.getLoans(function(err, lns){ allLoans= lns});
-
+      loans.getCount(function(err, cnt){allLoans =cnt});
+//functions
  this.displayMainPage = function(req, res, next) {
         "use strict";
            console.log('Entered displayMainPage with req: '+ json(req) + ' and res: ' + json(res))
             return res.render('main_template', {
             name : 'Library Main'
             });
- }
+ } //function
  this.displayBookLoans = function(req, res, next) {
         "use strict";
            console.log('Entered content.displayBookLoans')
@@ -40,29 +40,28 @@ function ContentHandler (db, url) {
             server: '' + url,
             cnt:0
            })
- }
+ }//function
  this.displayNewBook = function(req, res, next) {
         "use strict";
            console.log('Entered displayNewBook with req: '+ req + ' and res: ' + res)
             return res.render('managebooks_template', {
             name : 'Manage Books'
             });
- }
+ }//function
  this.displayNewPatron = function(req, res, next) {
         "use strict";
            console.log('Entered displayNewPatron with req: '+ req + ' and res: ' + res)
             return res.render('managepatrons_template', {
             name : 'Manage Patrons'
             });
- }
+ }//function
  this.displayReports = function(req, res, next) {
         "use strict";
             return res.render('viewreports_template', {
             name : 'Reports',
             reportx: 'Initially empty but will contain information about the selected report.'
             });
- }
-
+ }//function
  this.displayReportx = function(req, res, next) {
         "use strict";
          var rpt = req.body.reporttype;
@@ -71,9 +70,8 @@ function ContentHandler (db, url) {
             name : rpt,
             reportx: 'This will be the result of a fetch from the mongoDB.'
             });
- }
- 
- this.displayFiltered = function(req, res, next) {
+ }//function
+ this.displayFilteredBooks = function(req, res, next) {
         "use strict";
             var fb = req.body.filter_books;
             console.log('Entered content.displayFiltered with fb: ' + fb );
@@ -91,8 +89,7 @@ function ContentHandler (db, url) {
            });  //render call
           });  //DAO call
          } //if
-  } //function
-
+ }//function
   this.handleBookCheckout = function(req, res, next) {
         "use strict";
              var poid = ObjectId(req.body.patron.toString());
@@ -100,28 +97,67 @@ function ContentHandler (db, url) {
            console.log('Entered content.handleBookCheckout for patronId: ' + poid + ' bookid: ' + boid);
             createLoan(res, poid, boid );
   } //function
-  this.handleBookCheckin = function(req, res, next) {
+  this.displayCheckins = function(req, res, next){
+      "use strict";
+      console.log('Entered content.displayCheckins');
+      loans.getOpenLoans(function( count, html){ 
+         console.log('content.displayCheckin open loans: ' + count);
+         res.render(
+          'checkin_template', 
+          { 
+            name: 'Check in Books',
+            pf:'',
+            loans: html,
+            cnt:count
+          }
+        );
+    });
+ }//function
+ this.displayFilteredPatrons = function(req, res, next){
+   var pf = req.body.filter_persons;
+   console.log('Entered content.displayFilteredPatrons by: '+ pf);
+   loans.filterByPerson(pf, function(count, html){
+    res.render(
+      'checkin_template', 
+      {
+        name:'Check in Books',
+        pf: pf,
+        loans: html,
+        cnt: count
+      }
+    ); //render
+}); //filterByPerson
+}//function 
+this.handleBookCheckin = function(req, res, next) {
         "use strict";
-            var poid = ObjectId(req.body.patron);
-            var boid = ObjectId(req.body.book);
-            var lq=  { "bookId" : boid, "patronId" : poid, CiDate: {$eq: null} };
-            console.log('Entered content.handleBookCheckin for patronId: ' + poid + ' bookid: ' + boid);
-            loans.updateEntry('checkin', lq, function(err, updated){
-             console.log('Updated book loans: ' + updated);
-             books.updateStatus({ "_id" : boid },function(err, updated){
+    var loan = req.body.loan;
+    console.log('Entered content.handleBookCheckin with loanid: ' + loan );
+
+    var idAry = loan.split('_');
+    var loanid = ObjectId(idAry[0]);
+    var bookid= ObjectId(idAry[1]);
+    var lnquery=  { "_id" : loanid };
+    var bkquery=  { "_id" : bookid };
+
+//    console.log('Entered content.handleBookCheckin for patronId: ' + poid + ' bookid: ' + boid);
+    loans.updateEntry('checkin', lnquery, function(err, updated){
+      console.log('Updated loans: ' + updated);
+      books.updateStatus(bkquery,function(err, updated){
               console.log('Book marked Available: ' + updated);
-              res.render('loans_template', 
+         loans.getOpenLoans(function( count, html){
+         console.log('content.handleBookCheckin open loans: ' + count);
+         res.render('checkin_template', 
               { 
                name: 'Checkin complete.',
-               bf:'',
-               users: allPatrons,
-               books: booklist,
-               server:'' + url,
-               cnt:0
-              });
-             });
-           });
-  } //function
+           pf:'',
+           loans: html,
+           cnt:count
+          }
+        ); //render template
+     });
+    }); //update book
+  }); //update loan       
+ }//function
 
   function createLoan(res, patronid, bookid){
      console.log('Entered function createLoan in content.handleCheckout');

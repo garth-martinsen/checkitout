@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<style>
+div.container {
+   font: normal normal normal 11px/normal '.Arial-Regular';
+    width: 42em;
+    height: 11em;
+    padding: 5px;
+    border: .1em solid black;
+    background-color: lightgray;
+}
+
+}
+.h2 {
+ text-align:center;
+}
+
+#filter-label {
+  width: 8%;
+  background-color: #E7EBEC;
+}
+
+
+#person-list {
+  width: 87%;
+}
+
+#filter-persons {
+  width: 5%;
+}
+#loan-list {
+  width: 80%;
+}
+#button-box {
+text-align:center;
+}
+ .button {
+  margin: 10px;
+    color: yellow;
+    background-color: gray;
+}
+
+</style>
+</head>
+
+<body>
+<form id="bookloans">
+<div class = "container">
+   <div class = "box" id="header-box" >
+      <h2><%= name %></h2>
+   </div>
+   <div class="box" id="book-box">
+    <input type="text" value="Patron:" class="label" id="filter-label" disabled>
+    <input type="text" id="filter-persons" name="filter_persons" value="<%=pf %>" > 
+    <select id="loan-list"  name="loan">
+     <%- loans%>
+    </select>
+   </div>
+   <div class="box" id="button-box">
+    <h5 style='float:left; margin-left:6em' ><%=cnt %></h5>
+    <input type="submit" value="FilterList" formaction='http://localhost:8181/checkinf' formmethod="post" formenctype="application/x-www-form-urlencoded" class="button"></input>
+    <input type="submit" class = "button" id="checkin_button" value="CheckIn" formaction='http://localhost:8181/checkin' formmethod="post" formenctype="application/x-www-form-urlencoded" > 
+   </div>
+</div>
+</form>
+</body>
+</html>

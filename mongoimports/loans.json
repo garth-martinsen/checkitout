@@ -1,1 +1,44 @@
-{"CiDate":{"$date":"2015-08-03T18:10:14.976Z"},"CoDate":{"$date":"2015-08-03T18:09:59.806Z"},"Contact":"Duck, Donald","DueDate":{"$date":"2015-08-17T18:09:59.806Z"},"Title":"Disney World, What to see.","_id":{"$oid":"55bfae77f3610e5e0478b313"}}
+{
+	"CiDate": {
+		"$date": "2015-10-07T21:45:36.569Z"
+	},
+	"CoDate": {
+		"$date": "2015-10-07T15:52:45.878Z"
+	},
+	"Contact": "Espinoza, Juan Gabriel",
+	"DueDate": {
+		"$date": "2015-10-21T15:52:45.878Z"
+	},
+	"Title": "Wild, Wild Wolves",
+	"_id": {
+		"$oid": "56153fcd814c86fa1b3b5291"
+	},
+	"bookId": {
+		"$oid": "555f81c703648ee76a25b9c3"
+	},
+	"patronId": {
+		"$oid": "555f89bb03648ee76a25bb50"
+	}
+}
+{
+	"CiDate": {
+		"$date": "2015-10-07T23:29:00.172Z"
+	},
+	"CoDate": {
+		"$date": "2015-10-07T16:00:11.064Z"
+	},
+	"Contact": "Ojeda, Sofia",
+	"DueDate": {
+		"$date": "2015-10-21T16:00:11.064Z"
+	},
+	"Title": "Los Libros del Churrinche Mundo cercano",
+	"_id": {
+		"$oid": "5615418b3de1d6fd1bd971b6"
+	},
+	"bookId": {
+		"$oid": "555f81c703648ee76a25ba2d"
+	},
+	"patronId": {
+		"$oid": "555f89bb03648ee76a25bb5a"
+	}
+}

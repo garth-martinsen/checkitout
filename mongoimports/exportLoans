@@ -1,0 +1,1 @@
+mongoexport -h localhost -p 27017 -d AGLC -c loans --limit 2 --pretty>loans.json
