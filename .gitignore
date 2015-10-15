@@ -1,3 +1,4 @@
 *.swp
 study/*
 node_modules/*
+*.swo
