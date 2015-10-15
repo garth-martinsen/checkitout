@@ -68,9 +68,9 @@ function BooksDAO(db) {
            callback(null, items.length, html);
    });
  }
-  this.updateStatus= function(q,callback){ 
+  this.updateStatus= function(q,status, callback){ 
      console.log('Entered books.updateStatus with query: ' + JSON.stringify(q)); 
-     books.update(q, {$set: {Status: 'Available'}}, function(err, updated){
+     books.update(q, {$set: {Status: status}}, function(err, updated){
      callback(err, updated );
  });
  }

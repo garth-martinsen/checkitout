@@ -73,7 +73,7 @@ function LoansDAO(db) {
           loan.CiDate=dt;
         }
  
-        // now insert/update the loan
+        // now insert the loan
           loans.insert(loan, function(err, wr){
             if(err) throw err;
             console.log('WriteConcern: ' + JSON.stringify(wr));

@@ -92,9 +92,9 @@ function ContentHandler (db, url) {
  }//function
   this.handleBookCheckout = function(req, res, next) {
         "use strict";
-             var poid = ObjectId(req.body.patron.toString());
+            var poid = ObjectId(req.body.patron.toString());
             var boid = ObjectId(req.body.book.toString());
-           console.log('Entered content.handleBookCheckout for patronId: ' + poid + ' bookid: ' + boid);
+            console.log('Entered content.handleBookCheckout for patronId: ' + poid + ' bookid: ' + boid);
             createLoan(res, poid, boid );
   } //function
   this.displayCheckins = function(req, res, next){
@@ -142,7 +142,7 @@ this.handleBookCheckin = function(req, res, next) {
 //    console.log('Entered content.handleBookCheckin for patronId: ' + poid + ' bookid: ' + boid);
     loans.updateEntry('checkin', lnquery, function(err, updated){
       console.log('Updated loans: ' + updated);
-      books.updateStatus(bkquery,function(err, updated){
+      books.updateStatus(bkquery,'Available', function(err, updated){
               console.log('Book marked Available: ' + updated);
          loans.getOpenLoans(function( count, html){
          console.log('content.handleBookCheckin open loans: ' + count);
@@ -173,6 +173,10 @@ this.handleBookCheckin = function(req, res, next) {
         console.log('loan: ' + JSON.stringify(theLoan));
         loans.insertEntry('checkout', theLoan, function(err, saved){
          if(err) throw err;
+         var bkquery=  { "_id" : bookid };
+         books.updateStatus(bkquery,'Checkedout', function(err, updated){
+           console.log('Book marked Checkedout: ' + updated);
+         });
           console.log('content.handleBookCheckout saved: ' + JSON.stringify(saved));
           res.render('loans_template', 
             {
