@@ -10,7 +10,7 @@
     "ejs": "^3.1.6",
     "express": "^4.13.3",
     "mongodb": "^3.1.13",
-    "validator": "^9.4.1"
+    "validator": "^13.6.0"
   },
   "author": "Garth Martinsen",
   "license": "GPL-3.0",
